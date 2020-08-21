@@ -14,6 +14,7 @@ import RxSwift
 import NSObject_Rx
 
 typealias RequestCompletion = (Bool, Any?, Error?) -> Void
+typealias RequestObCompletion = (Bool, Any?, Error?)
 class ApiClient: HasDisposeBag  {
     private let session: Alamofire.Session = {
         let configuration = URLSessionConfiguration.af.default
@@ -37,6 +38,28 @@ class ApiClient: HasDisposeBag  {
                 responseData(false, nil, Error)
             })
             .disposed(by: disposeBag)
+    }
+    
+    public func send(api: API, retryCnt: Int = 1) -> Observable<RequestObCompletion> {
+        return session.rx
+            .request(.get, api.request.build(.data))
+            .responseDataResponse(api: api)
+            .map { (dataResponse) in
+                let result = api.response.parse!(dataResponse.value)
+                var requestCompletion: RequestObCompletion
+                if result is Error {
+                    requestCompletion = (false, nil, result as? Error)
+                } else {
+                    requestCompletion = (true, result, nil)
+                }
+                return requestCompletion
+            }
+            .retry(retryCnt)
+            .catchError { Observable.just((false, nil, $0)) }
+    }
+    
+    public func sendZip(api: [Observable<RequestObCompletion>]) -> Observable<[RequestObCompletion]> {
+        return Observable.zip(api)
     }
     
     deinit {

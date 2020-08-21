@@ -15,16 +15,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="26f-QV-Xz0">
-                                <rect key="frame" x="181" y="304" width="52" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="통신연결"/>
-                                <connections>
-                                    <action selector="apiCall:" destination="BYZ-38-t0r" eventType="touchUpInside" id="K5w-Yx-FLm"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Tpw-ZO-kNy">
+                                <rect key="frame" x="143.5" y="408" width="127" height="90"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxV-Xe-Z5Q">
+                                        <rect key="frame" x="0.0" y="0.0" width="127" height="30"/>
+                                        <state key="normal" title="api_closure"/>
+                                        <connections>
+                                            <action selector="apiCall:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yuZ-ih-YMm"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Cf-bL-t9s">
+                                        <rect key="frame" x="0.0" y="30" width="127" height="30"/>
+                                        <state key="normal" title="api_observable"/>
+                                        <connections>
+                                            <action selector="apiObservableCall:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YiH-Sz-Qzx"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDd-oi-T1h">
+                                        <rect key="frame" x="0.0" y="60" width="127" height="30"/>
+                                        <state key="normal" title="api_observable.zip"/>
+                                        <connections>
+                                            <action selector="apiZipCall:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mAo-Zy-L9s"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Tpw-ZO-kNy" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="C17-01-AuC"/>
+                            <constraint firstItem="Tpw-ZO-kNy" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Sfz-T4-qTz"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

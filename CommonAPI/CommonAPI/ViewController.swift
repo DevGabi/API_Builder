@@ -18,10 +18,33 @@ class ViewController: UIViewController {
     @IBAction func apiCall(_ sender: Any) {
         apiClient.send(api: API.sampleAPI()) { (success, data, error) in
             guard let topLavel = data as? TopLevel, success else {
-                print(error)
+                print(error.debugDescription)
                 return
             }
+            print(topLavel.title)
         }
+    }
+    @IBAction func apiObservableCall(_ sender: Any) {
+        apiClient.send(api: API.sampleAPI())
+            .subscribe(onNext: { (success, data, error) in
+                guard let topLavel = data as? TopLevel, success else {
+                    print(error.debugDescription)
+                    return
+                }
+                print(topLavel.title)
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    @IBAction func apiZipCall(_ sender: Any) {
+        let apiList = [
+            apiClient.send(api: API.sampleAPI()),
+            apiClient.send(api: API.sampleAPI2())
+        ]
+        apiClient.sendZip(api: apiList)
+            .subscribe(onNext: { (completion) in
+                print(completion)
+            })
+            .disposed(by: rx.disposeBag)
     }
 }
 

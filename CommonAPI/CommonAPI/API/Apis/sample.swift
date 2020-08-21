@@ -9,6 +9,17 @@
 import Foundation
 
 struct TopLevel: Codable {
+    let userID, id: Int
+    let title: String
+    let completed: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case id, title, completed
+    }
+}
+
+struct TopLevel2: Codable {
     let userID, id: String
     let title: String
     let completed: Bool
@@ -18,6 +29,7 @@ struct TopLevel: Codable {
         case id, title, completed
     }
 }
+
 
 extension API {
     class func sampleAPI() -> API {
@@ -42,5 +54,29 @@ extension API {
         
         return sampleAPI
     }
+    
+    class func sampleAPI2() -> API {
+        let query = ["test": "1"]
+        let sampleAPI = API()
+        sampleAPI.request
+            .setScheme(scheme: .HTTPS)
+            .setDomain(domain: "jsonplaceholder.typicode.com")
+            .setPath(path: "/todos/2")
+            .setQuary(query: query)
+        
+        sampleAPI.response.parse = { responseData in
+            guard let responseData = responseData as? Data else { return nil }
+            print(responseData)
+            do {
+                let codable = try JSONDecoder().decode(TopLevel2.self, from: responseData)
+                return codable
+            } catch {
+                return error
+            }
+        }
+        
+        return sampleAPI
+    }
+
 }
             
