@@ -189,7 +189,6 @@
 				D4B28B7224EE5812008D1B37 /* Error */,
 				D4AD993824E1264C00B23BF4 /* Request */,
 				D4AD993924E1265800B23BF4 /* Response */,
-				D4908D2D24DAADB300358244 /* Path */,
 				D4908D2C24DAADAC00358244 /* ApiClient */,
 				D4908D2B24DAAD7E00358244 /* Apis */,
 			);
@@ -211,13 +210,6 @@
 				D4908D3024DAADDC00358244 /* ApiClient.swift */,
 			);
 			path = ApiClient;
-			sourceTree = "<group>";
-		};
-		D4908D2D24DAADB300358244 /* Path */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Path;
 			sourceTree = "<group>";
 		};
 		D4AD993824E1264C00B23BF4 /* Request */ = {

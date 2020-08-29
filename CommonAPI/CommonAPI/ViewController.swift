@@ -28,7 +28,8 @@ class ViewController: UIViewController {
         apiClient.send(api: API.sampleAPI())
             .subscribe(onNext: { (success, data, error) in
                 guard let topLavel = data as? TopLevel, success else {
-                    print(error.debugDescription)
+                    let errorCode = error?.asAFError?.errorCode
+                    print(errorCode.debugDescription)
                     return
                 }
                 print(topLavel.title)

@@ -36,6 +36,7 @@ extension API {
         let query = ["test": "1"]
         let sampleAPI = API()
         sampleAPI.request
+            .setHeaderField(field: ["1": "2"])
             .setScheme(scheme: .HTTPS)
             .setDomain(domain: "jsonplaceholder.typicode.com")
             .setPath(path: "/todos/1")

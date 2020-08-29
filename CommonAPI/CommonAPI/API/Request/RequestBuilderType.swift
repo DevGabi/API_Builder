@@ -31,8 +31,11 @@ protocol RequestBuilderType {
     var responseData: ResponseDataType { get set }
     var urlComponents: URLComponents { get set }
 
+    @discardableResult
     func setScheme(scheme: SchemeType) -> RequestBuilderType
+    @discardableResult
     func setDomain(domain: String) -> RequestBuilderType
+    @discardableResult
     func setPath(path: String) -> RequestBuilderType
     @discardableResult
     func setQuary(query: [String: String]) -> RequestBuilderType

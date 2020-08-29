@@ -15,7 +15,7 @@ import NSObject_Rx
 
 typealias RequestCompletion = (Bool, Any?, Error?) -> Void
 typealias RequestObCompletion = (Bool, Any?, Error?)
-class ApiClient: HasDisposeBag  {
+class ApiClient: HasDisposeBag {
     private let session: Alamofire.Session = {
         let configuration = URLSessionConfiguration.af.default
         configuration.headers = HTTPHeaders.default // default
@@ -25,8 +25,8 @@ class ApiClient: HasDisposeBag  {
     
     public func send(api: API, responseData: @escaping RequestCompletion) {
         session.rx
-            .request(.get, api.request.build(.data))
-            .responseDataResponse(api: api)
+            .request(api.request.httpMethod, api.request.build(api.request.responseData), headers: api.request.headerField)
+            .validationDataResponse(api: api)
             .subscribe(onNext: { (dataResponse) in
                 let result = api.response.parse!(dataResponse.value)
                 if result is Error {
@@ -34,16 +34,16 @@ class ApiClient: HasDisposeBag  {
                 } else {
                     responseData(true, result, nil)
                 }
-            }, onError: { (Error) in
-                responseData(false, nil, Error)
+            }, onError: { (error) in
+                responseData(false, nil, error)
             })
             .disposed(by: disposeBag)
     }
     
     public func send(api: API, retryCnt: Int = 1) -> Observable<RequestObCompletion> {
         return session.rx
-            .request(.get, api.request.build(.data))
-            .responseDataResponse(api: api)
+            .request(api.request.httpMethod, api.request.build(api.request.responseData), headers: api.request.headerField)
+            .validationDataResponse(api: api)
             .map { (dataResponse) in
                 let result = api.response.parse!(dataResponse.value)
                 var requestCompletion: RequestObCompletion
@@ -68,8 +68,9 @@ class ApiClient: HasDisposeBag  {
 }
 
 extension ObservableType where Element: DataRequest {
-    func responseDataResponse(api: API) -> Observable<DataResponse<Any, AFError>> {
-        return flatMap { (dataRequest) -> Observable<DataResponse<Any, AFError>> in
+    func validationDataResponse(api: API) -> Observable<DataResponse<Any, AFError>> {
+        return map { $0.validate(statusCode: 200..<300)}
+            .flatMap { (dataRequest) -> Observable<DataResponse<Any, AFError>> in
             switch api.request.responseData {
             case .string:
                 return dataRequest.rx
